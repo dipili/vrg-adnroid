@@ -1,4 +1,4 @@
-package com.github.diplombmstu.vrg;
+package com.github.diplombmstu.vrg.temp;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;

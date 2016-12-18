@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.diplombmstu.vrg;
+package com.github.diplombmstu.vrg.temp;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,14 +20,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.github.diplombmstu.vrg.*;
 import com.google.vr.sdk.widgets.pano.VrPanoramaView;
 import com.neovisionaries.ws.client.*;
 import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Fragment for handling the Welcome tab.
@@ -74,37 +73,7 @@ public class WelcomeFragment extends Fragment
                     }
                     catch (OpeningHandshakeException e)
                     {
-                        // Status line.
-                        StatusLine sl = e.getStatusLine();
-                        System.out.println("=== Status Line ===");
-                        System.out.format("HTTP Version  = %s\n", sl.getHttpVersion());
-                        System.out.format("Status Code   = %d\n", sl.getStatusCode());
-                        System.out.format("Reason Phrase = %s\n", sl.getReasonPhrase());
-
-                        // HTTP headers.
-                        Map<String, List<String>> headers = e.getHeaders();
-                        System.out.println("=== HTTP Headers ===");
-                        for (Map.Entry<String, List<String>> entry : headers.entrySet())
-                        {
-                            // Header name.
-                            String name = entry.getKey();
-
-                            // Values of the header.
-                            List<String> values = entry.getValue();
-
-                            if (values == null || values.size() == 0)
-                            {
-                                // Print the name only.
-                                System.out.println(name);
-                                continue;
-                            }
-
-                            for (String value : values)
-                            {
-                                // Print the name and the value.
-                                System.out.format("%s: %s\n", name, value);
-                            }
-                        }
+                        Utils.printOpeningHandshakeException(e);
                     }
                     catch (Exception e)
                     {
@@ -148,6 +117,7 @@ public class WelcomeFragment extends Fragment
         panoWigetView.shutdown();
         super.onDestroy();
     }
+
 
     private synchronized void loadPanoImage()
     {

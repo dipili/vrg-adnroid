@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.diplombmstu.vrg;
+package com.github.diplombmstu.vrg.temp;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.github.diplombmstu.vrg.R;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 
