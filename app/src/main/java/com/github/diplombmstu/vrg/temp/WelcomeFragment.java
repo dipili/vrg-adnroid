@@ -14,17 +14,25 @@
  */
 package com.github.diplombmstu.vrg.temp;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.github.diplombmstu.vrg.*;
 import com.google.vr.sdk.widgets.pano.VrPanoramaView;
-import com.neovisionaries.ws.client.*;
+import com.neovisionaries.ws.client.OpeningHandshakeException;
+import com.neovisionaries.ws.client.WebSocket;
+import com.neovisionaries.ws.client.WebSocketAdapter;
+import com.neovisionaries.ws.client.WebSocketFactory;
 import org.json.JSONException;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 
@@ -34,8 +42,25 @@ import java.net.InetAddress;
 public class WelcomeFragment extends Fragment
 {
 
+    public static final String IMAGE_FILE_NAME = "bam";
+    private static File imageFile;
     private VrPanoramaView panoWigetView;
-    private ImageLoaderTask backgroundImageLoaderTask;
+    private ImageLoaderTask2 backgroundImageLoaderTask;
+
+    public File getTempFile(Context context, String url)
+    {
+        File file;
+        try
+        {
+            String fileName = Uri.parse(url).getLastPathSegment();
+            file = File.createTempFile(fileName, null, context.getCacheDir());
+        }
+        catch (IOException e)
+        {
+            return null; // TODO handle
+        }
+        return file;
+    }
 
     @Nullable
     @Override
@@ -43,6 +68,16 @@ public class WelcomeFragment extends Fragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState)
     {
+        try
+        {
+            if (imageFile == null)
+                imageFile = File.createTempFile(IMAGE_FILE_NAME, null, getContext().getCacheDir());
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
         View v = inflater.inflate(R.layout.welcome_fragment, container, false);
         panoWigetView = (VrPanoramaView) v.findViewById(R.id.pano_view);
 
@@ -65,7 +100,26 @@ public class WelcomeFragment extends Fragment
                             @Override
                             public void onTextMessage(WebSocket websocket, String message) throws Exception
                             {
-                                System.out.println(message);
+                                Log.d("textmessage", message);
+                            }
+
+                            @Override
+                            public void onBinaryMessage(WebSocket websocket, byte[] binary) throws Exception
+                            {
+
+                                try
+                                {
+                                    FileOutputStream outputStream = new FileOutputStream(imageFile);
+
+                                    outputStream.write(binary);
+                                    outputStream.close();
+
+                                    loadPanoImage();
+                                }
+                                catch (Exception e)
+                                {
+                                    e.printStackTrace();
+                                }
                             }
                         });
 
@@ -118,10 +172,9 @@ public class WelcomeFragment extends Fragment
         super.onDestroy();
     }
 
-
     private synchronized void loadPanoImage()
     {
-        ImageLoaderTask task = backgroundImageLoaderTask;
+        ImageLoaderTask2 task = backgroundImageLoaderTask;
         if (task != null && !task.isCancelled())
         {
             task.cancel(true);
@@ -130,10 +183,8 @@ public class WelcomeFragment extends Fragment
         VrPanoramaView.Options viewOptions = new VrPanoramaView.Options();
         viewOptions.inputType = VrPanoramaView.Options.TYPE_STEREO_OVER_UNDER;
 
-        String panoImageName = "converted.jpg";
-
-        task = new ImageLoaderTask(panoWigetView, viewOptions, panoImageName);
-        task.execute(getActivity().getAssets());
+        task = new ImageLoaderTask2(panoWigetView, viewOptions, imageFile);
+        task.execute();
         backgroundImageLoaderTask = task;
     }
 }

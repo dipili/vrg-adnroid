@@ -24,10 +24,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import com.github.diplombmstu.vrg.temp.WelcomeFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -40,11 +42,15 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+        final PagerAdapter adapter = new FragmentStatePagerAdapter(getSupportFragmentManager())
+        {
 
             @Override
-            public Fragment getItem(int position) {
-                switch (position) {
+            public Fragment getItem(int position)
+            {
+
+                switch (position)
+                {
                     case 0:
                         return new WelcomeFragment();
                     case 1:
@@ -52,30 +58,36 @@ public class MainActivity extends AppCompatActivity {
 //                    case 1:
 //                        return new GorillaFragment();
                 }
+
                 return null;
             }
 
             @Override
-            public int getCount() {
+            public int getCount()
+            {
                 return 2;
             }
         };
         assert viewPager != null;
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener()
+        {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
+            public void onTabSelected(TabLayout.Tab tab)
+            {
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+            public void onTabUnselected(TabLayout.Tab tab)
+            {
 
             }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+            public void onTabReselected(TabLayout.Tab tab)
+            {
 
             }
         });

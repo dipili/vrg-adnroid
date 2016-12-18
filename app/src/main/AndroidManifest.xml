@@ -2,6 +2,7 @@
           package="com.github.diplombmstu.vrg">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -9,7 +10,8 @@
                  android:label="@string/app_name"
                  android:icon="@mipmap/ic_launcher"
                  android:supportsRtl="true"
-                 android:theme="@style/AppTheme">
+                 android:theme="@style/AppTheme"
+                 android:largeHeap="true">
 
         <activity
                 android:name=".MainActivity"
