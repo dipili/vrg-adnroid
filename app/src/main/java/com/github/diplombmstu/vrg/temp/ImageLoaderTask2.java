@@ -13,9 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 
-/**
- * Created by vitaly on 26.07.2016.
- */
 public class ImageLoaderTask2 extends AsyncTask<AssetManager, Void, Bitmap>
 {
 

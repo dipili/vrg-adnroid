@@ -46,7 +46,7 @@ public class ConnectionManager
                 }
                 catch (IOException ex)
                 {
-                    Log.e(TAG, "Oops" + ex.getMessage());
+                    Log.e(TAG, "Oops " + ex.getMessage());
                 }
 
                 return null;
